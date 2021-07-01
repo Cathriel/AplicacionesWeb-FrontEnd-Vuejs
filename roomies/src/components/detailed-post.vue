@@ -19,8 +19,8 @@
           <div class="left">
             <v-container fluid>
               <v-card class="py-4">
-                <v-card-title>Título</v-card-title>
-                <v-card-subtitle>Calle</v-card-subtitle>
+                <v-card-title>{{item.title}}</v-card-title>
+                <v-card-subtitle>{{item.address}}</v-card-subtitle>
                 <v-card class="ma-3">
                   <v-simple-table >
                     <template >
@@ -42,17 +42,17 @@
                       </thead>
                       <tbody>
                       <tr>
-                        <td class="text-center">S/200</td>
-                        <td class="text-center">2</td>
-                        <td class="text-center">4</td>
-                        <td class="text-center">100</td>
+                        <td class="text-center">{{ item.price }}</td>
+                        <td class="text-center">{{item.roomQuantity}}</td>
+                        <td class="text-center">{{item.bathroomQuantity}}</td>
+                        <td class="text-center">{{item.price*0.1}}</td>
                       </tr>
                       </tbody>
                     </template>
                   </v-simple-table>
                 </v-card>
                 <v-card-title>Descripción</v-card-title>
-                <v-card-text>Descripcion Detalle</v-card-text>
+                <v-card-text>{{item.description}}</v-card-text>
                 <v-card-title>Ubicación</v-card-title>
                 <br>
                 <GmapMap
@@ -61,41 +61,28 @@
                     style='width:100%;  height: 400px;'
                 />
 
-                <v-card class="ma-6">
-                  <v-card-actions>
-                    <v-btn color="orange lighten-2" text > Normas de Convivencia </v-btn>
-                    <v-btn
-                        icon
-                        @click="show = !show"
-                    >
-                      <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                    </v-btn>
-                  </v-card-actions>
-                  <v-expand-transition>
-                    <div v-show="show">
-                      <v-divider></v-divider>
-                      <v-card-text> Norma 1 </v-card-text>
-                    </div>
-                  </v-expand-transition>
-                </v-card>
-
                 <v-card-title> Reseñas </v-card-title>
-                <v-card max-width="50%" class="mx-4 rounded-lg" >
-                  <v-card-text>Fecha</v-card-text>
-                  <v-card-title> Título Reseña</v-card-title>
-                  <v-card-text>Descripcion</v-card-text>
-                  <v-divider></v-divider>
-                  <v-card-text class="font-weight-bold">¿Fue útil esta reseña?</v-card-text>
-                  <v-btn icon color="black" @click="like">
-                    <v-icon>mdi-heart-outline</v-icon>
-                  </v-btn>
-                </v-card>
+
+                <v-row dense>
+                  <v-col v-for="review in reviews" :key="review.id" >
+                    <v-card max-width="50%" class="mx-4 rounded-lg" >
+                      <v-card-text>{{review.date}}</v-card-text>
+                      <v-card-text>{{review.content}}</v-card-text>
+                      <v-divider></v-divider>
+                      <v-card-text class="font-weight-bold">¿Fue útil esta reseña?</v-card-text>
+                      <v-btn icon color="black" @click="like">
+                        <v-icon>mdi-heart-outline</v-icon>
+                      </v-btn>
+                    </v-card>
+                  </v-col>
+                </v-row>
+
+
                 <v-card-title>Datos del Arrendador</v-card-title>
                 <v-card max-width="40%" class="ma-3">
-                  <v-card-subtitle>Nombre</v-card-subtitle>
-                  <v-card-subtitle>DNI</v-card-subtitle>
-                  <v-card-subtitle>Teléfono</v-card-subtitle>
-                  <v-card-subtitle>Celular</v-card-subtitle>
+                  <v-card-subtitle>Nombre: {{ item.landlord.name }} {{item.landlord.lastName}}</v-card-subtitle>
+                  <v-card-subtitle>DNI: {{item.landlord.idCard}}</v-card-subtitle>
+                  <v-card-subtitle>Celular: {{ item.landlord.cellPhone }}</v-card-subtitle>
                 </v-card>
               </v-card>
             </v-container>
@@ -105,34 +92,6 @@
               <v-card>
                 <v-card-title>Contacta al arrendador</v-card-title>
                 <v-card-text>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="6" >
-                      <v-text-field
-                          label="Nombre"
-                          solo
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6" >
-                      <v-text-field
-                          label="Teléfono"
-                          solo
-                      ></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="12" md="12" >
-                      <v-text-field
-                          label="Email"
-                          solo
-                      ></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="12" md="12" >
-                      <v-textarea solo label="Email" >Mensaje</v-textarea>
-
-                    </v-col>
-
-                  </v-row>
-
                   <v-btn block
                          rounded
                          color=#FBA31A
@@ -151,30 +110,29 @@
         </v-col>
         <v-container fluid>
           <v-row dense>
-            <v-col v-for="card in cards" :key="card.id" :cols="card.flex">
+            <v-col v-for="post in posts.slice(0,4)" :key="post.id" :cols="3">
               <v-card>
-                <v-img :src="card.src" height="200px" style="float: right; margin: 0px 0px 15px 15px;">
+                <v-img :src="cards[post.id]" height="200px" style="float: right; margin: 0px 0px 15px 15px;">
                   <v-card-actions>
                     <v-btn icon color="white" @click="favourite">
                       <v-icon>mdi-heart-outline</v-icon>
                     </v-btn>
                   </v-card-actions>
                 </v-img>
-                <v-card-title v-text="card.price"></v-card-title>
-                <v-card-text>
-                  <v-row align="center" class="mx-0">
-                    <v-rating :value=card.value color="amber" dense half-increments readonly size="14"></v-rating>
-                  </v-row>
-                </v-card-text>
-                <v-card-subtitle style="font-size: 120%; " v-text="card.district"></v-card-subtitle>
-                <v-card-subtitle class="my-0 text-sm-body-1" v-text="card.description"></v-card-subtitle>
+                <v-card-title >S/ {{post.price}}</v-card-title>
+<!--                <v-card-text>-->
+<!--                  <v-row align="center" class="mx-0">-->
+<!--                    <v-rating :value=card.value color="amber" dense half-increments readonly size="14"></v-rating>-->
+<!--                  </v-row>-->
+<!--                </v-card-text>-->
+                <v-card-subtitle style="font-size: 120%; " >{{post.district}}, {{post.province}}</v-card-subtitle>
+                <v-card-subtitle class="my-0 text-sm-body-1" v-text="post.description"></v-card-subtitle>
                 <v-card-text>
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn color="deep-purple lighten-2" text @click="contact">
-                    Contacto
+                  <v-btn color="deep-purple lighten-2" text @click="navigateToDetailedPostId(post.id)">
+                    Descripción
                   </v-btn>
-                  <v-btn color="deep-purple lighten-2" text @click="navigateToDetailedPostId(card.id)">Descripción</v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
@@ -189,18 +147,32 @@
 <script>
 
 
+import PostApiService from "@/services/posts-api.service";
+import PostReviewsAPiService from "@/services/post-reviews-api.service";
+
 export default {
   name: "detailed-post",
 
   data() {
 
     return {
+      posts:[],
+      displayPosts: [],
+      reviews:[],
+      displayReviews:[],
+      item:[],
 
       cards: [
-        { id: 1,src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 3, price: 'S/ 1800', district: 'San Miguel, Lima', avenue: 'aea1', value: 2.5, description: "Alquilo Departamento en San Miguel", btn_dsc: false },
-        { id: 2,src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 3, price: 'S/ 1600', district: 'Los Olivos, Lima', avenue: 'aea2', value: 3.5, description: "Alquilo Departamento en Los Olivos", btn_dsc: false },
-        { id: 3,src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 3, price: 'S/ 900', district: 'Miraflores, Lima', avenue: 'aea3', value: 4.5, description: "Alquilo Departamento en Miraflores", btn_dsc: false },
-        { id: 4,src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 3, price: 'S/ 2100', district: 'Surco, Lima', avenue: 'aea4', value: 4.5, description: "Alquilo Departamento en Surco", btn_dsc: false },
+        { id: 1,src: 'https://q-ec.bstatic.com/images/hotel/max1024x768/193/193401125.jpg'},
+        { id: 2,src: 'https://d3rny71whgunfp.cloudfront.net/eyJidWNrZXQiOiJyZXNlbS1wZSIsImtleSI6IjE2MDEzMzE2NzY4MDhfLTc2ODY1OTE0My5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjM1NCwiaGVpZ2h0IjoyNDAsImZpdCI6ImNvdmVyIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfX19' },
+        { id: 3,src: 'https://d3rny71whgunfp.cloudfront.net/eyJidWNrZXQiOiJyZXNlbS1wZSIsImtleSI6IjE1ODk2MTExOTE3MTFfMzkzMTY5OTk2LmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6ODQwLCJoZWlnaHQiOjYzMCwiZml0IjoiY292ZXIiLCJ3aXRob3V0RW5sYXJnZW1lbnQiOnRydWV9fX0=' },
+        { id: 4,src: 'https://www.requieromicasaventas.com/wp-content/uploads/2019/09/Departamentos-en-venta-en-Surco.jpg'},
+        { id: 5,src: 'https://static.tokkobroker.com/pictures/109555395905328607171649885392781135955452625865933643697834565602442661197831.jpg'},
+        { id: 6,src: 'https://thumbs4.properati.com/VnfJV5Z3MC5uQENtv8wm9AtIvOU=/360x270/filters:strip_icc()/https%3A%2F%2Fcdn-us.inmokey.com%2Fproperties%2F8%2F3%2Fp-664283-010221102612-885390.jpeg' },
+        { id: 7,src: 'https://d2f2b72of8fmj1.cloudfront.net/1562901965801_15602006.jpeg'},
+        { id: 8,src: 'https://img-us-1.trovit.com/img1pe/X1hs10l16B1Y/X1hs10l16B1Y.1_11.jpg' },
+        { id: 9,src: 'https://www.bienesonline.com/peru/photos/venta-de-iluminado-y-espacioso-departamento-en-surco-DEV333171618799274-324.jpg'},
+        { id: 10,src: 'https://static.tokkobroker.com/pictures/47168099978317268818807495368407560918424258965754953793026510610240177842409.jpg'},
       ],
 
       center: { lat: 45.508, lng: -73.587 },
@@ -221,6 +193,84 @@ export default {
       ],
     }
   },
+
+  created() {
+    this.retrievePosts();
+    this.retrievePost();
+    this.retrieveReviews();
+  },
+
+  methods:{
+    retrievePosts(){
+      PostApiService.getAll()
+          .then(response => {
+            this.posts = response.data;
+            this.displayPosts = response.data.map(this.getDisplayPost);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+    },
+
+    retrievePost(id){
+      PostApiService.get(id)
+          .then(response => {
+            this.item = response.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+    },
+
+    retrieveReviews(id){
+      PostReviewsAPiService.getAll(id)
+          .then(response => {
+            this.reviews = response.data;
+            this.displayReviews = response.data.map(this.getDisplayReview);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+    },
+
+    getDisplayPost(post) {
+      return {
+        id: post.id,
+        title: post.title,
+        address: post.address,
+        province:post.province,
+        district:post.district,
+        department:post.department,
+        price:post.price,
+        roomQuantity:post.roomQuantity,
+        bathroomQuantity:post.bathroomQuantity,
+        src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg',
+        landlordId:post.landlordId,
+      };
+    },
+
+    getDisplayReview(review) {
+      return {
+        id: review.id,
+        content: review.content,
+        date:review.date,
+      };
+    },
+
+    navigateToDetailedPost() {
+      this.$router.push({name: 'detailed-post'});
+    },
+
+    navigateToDetailedPostId(id) {
+      this.$router.push({name: 'detailed-post', params: { id: id}});
+    }
+},
+
+  mounted() {
+    this.retrievePosts();
+    this.retrievePost(this.$route.params.id);
+    this.retrieveReviews(this.$route.params.id);
+  }
 }
 </script>
 
