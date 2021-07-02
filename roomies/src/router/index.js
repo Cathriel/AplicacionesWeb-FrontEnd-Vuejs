@@ -34,6 +34,31 @@ const routes = [
         path: '/login',
         name: 'login',
         component: () => import('../components/login')
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: () => import('../components/register')
+    },
+    {
+        path: '/home-leaseholder',
+        name: 'home-leaseholder',
+        component: () => import('../components/home-leaseholder')
+    },
+    {
+        path: '/home-landlord',
+        name: 'home-landlord',
+        component: () => import('../components/home-landlord')
+    },
+    {
+        path: '/search-roomie',
+        name: 'search-roomie',
+        component: () => import('../components/search-roomie')
+    },
+    {
+        path: '/favourite-posts',
+        name: 'favourite-posts',
+        component: () => import('../components/favourite-posts')
     }
 ]
 
@@ -42,5 +67,16 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
+
+router.beforeEach((to, from, next) => {
+    const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+    const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+    if(nearestWithTitle) {
+        document.title = nearestWithTitle.meta.title;
+    } else if(previousNearestWithMeta) {
+        document.title = previousNearestWithMeta.meta.title;
+    }
+    next();
+});
 
 export default router
