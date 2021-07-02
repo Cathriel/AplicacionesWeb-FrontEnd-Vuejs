@@ -231,17 +231,6 @@ export default {
     navigateToDetailedPostId(id) {
       this.$router.push({name: 'detailed-post', params: { id: id}});
     },
-    // retrievePosts(){
-    //   PostApiService.getAll()
-    //       .then(response => {
-    //         this.posts = response.data;
-    //         this.displayPosts = response.data.map(this.getDisplayPost);
-    //       })
-    //       .catch((e) => {
-    //         console.log(e);
-    //       });
-    // },
-
   },
 
 }

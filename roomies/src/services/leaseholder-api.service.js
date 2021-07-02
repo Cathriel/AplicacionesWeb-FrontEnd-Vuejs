@@ -1,27 +1,21 @@
-import http from './http.common'
+import http from './http.common';
 
-class LeaseholderApiService {
+class LeaseholdersApiService {
     getAll() {
-        return http.get('/cards');
+        return http.get('/leaseholders');
     }
     get(id) {
-        return http.get(`/tutorials/${id}`);
+        return http.get(`/leaseholders/${id}`)
     }
-    create(data) {
-        return http.post('/tutorials', data);
+    create(planId,data) {
+        return http.post(`/leaseholders/plans/${planId}/leaseholders`, data);
     }
     update(id, data) {
-        return http.put(`/tutorials/${id}`, data);
+        return http.put(`/leaseholders/${id}`, data);
     }
     delete(id) {
-        return http.delete(`/tutorials/${id}`);
-    }
-    deleteAll() {
-        return http.delete(`/tutorials`);
-    }
-    findByTitle(title) {
-        return http.get(`/tutorials?title=${title}`);
+        return http.delete(`/leaseholders/${id}`);
     }
 }
 
-export default new LeaseholderApiService();
+export default new LeaseholdersApiService()

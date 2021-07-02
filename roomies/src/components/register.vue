@@ -382,7 +382,7 @@
                 <v-text-field filled dense label="Distrito" v-model="profile.district" style="width: 10%; margin-right: 15px; margin-left: 15px"></v-text-field>
               </v-row>
               <v-text-field filled dense label="Direccion" v-model="profile.address" style="width: 100%;"></v-text-field>
-              <v-btn color="#fba31a" @click="guardar">Registrarse</v-btn>
+              <v-btn color="#fba31a" @click="guardar" to="/login">Registrarse</v-btn>
             </v-form>
             <v-card-actions>
               <v-btn
@@ -458,7 +458,6 @@ export default {
             .then((result) =>{
               console.log(result)
             })
-       await this.$router.push("/home-leaseholder");
       }
       else {
         console.log(`https://roomiesapi.azurewebsites.net/api/landlords/plans/${this.planId}/landlords?username=${this.user.username}`)
@@ -466,7 +465,6 @@ export default {
             .then((result) =>{
               console.log(result)
             })
-        await this.$router.push("/home-landlord");
       }
     },
   }}
